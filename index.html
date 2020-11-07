@@ -26,9 +26,10 @@ in html
                     
                 $("button").on("click", gradeQuiz);
                 
-                $(".q5Choice").on("click"), function(){
-                    $(".q5Choice").css("background","rgb(255, 255, 0)");
-                };
+                $(".q5Choice").on("click", function(){
+                    $(".q5Choice").css("background-color","");
+                    $(this).css("background-color","rgb(255, 255, 0)")
+                });
                 
                 displayQ4Choices();
                 
@@ -50,6 +51,8 @@ in html
                     let q1Response = $("#q1").val().toLowerCase();
                     let q2Response = $("#q2").val();
                     let q4Response = $("input[name=q4]:checked").val();
+                    let q7Response = $("#q7").val();
+                    let q8Response = $("#q8").val().toLowerCase();
                     
                     if(q1Response == "sacramento"){
                         rightAnswer(1);
@@ -81,16 +84,54 @@ in html
                         wrongAnswer(5);
                     }
                     
+                    if($("#California").is(":checked") && !$("#Florida").is(":checked")){
+                        rightAnswer(6);
+                    }else{
+                        wrongAnswer(6);
+                    }
+                    
+                    if(q7Response == "bear"){
+                        rightAnswer(7);
+                    }else{
+                        wrongAnswer(7);
+                    }
+                    
+                    if(q8Response == "springfield"){
+                        rightAnswer(8);
+                    }else{
+                        wrongAnswer(8);
+                    }
+                    
+                    if($("#Alaska").is(":checked") && !$("#Texas").is(":checked")){
+                        rightAnswer(9);
+                    }else{
+                        wrongAnswer(9);
+                    }
+                    
+                    if($("#q10False").is(":checked") && !$("#q10True").is(":checked")){
+                        rightAnswer(10);
+                    }else {
+                        wrongAnswer(10);
+                    }
+                    
                     $("#totalScore").html(`Total Score: ${score}`);
                     $("#totalAttempts").html(`Total Attempts: ${++attempts}`);
                     localStorage.setItem("total_attempts", attempts);
+                    
+                    if(score >= 80){
+                     $("#totalScore").attr("class", "text-success");   
+                    }else{
+                     $("#totalScore").attr("class", "text-danger");   
+
+                    }
+                    
                 }// gradeQuiz
                 
                 function rightAnswer(index){
                     $(`#q${index}Feedback`).html("Correct!");
                     $(`#q${index}Feedback`).attr("class", "bg-success text-white");
                     $(`#markImg${index}`).html("<img src='img/checkmark.png'>");
-                    score += 20;
+                    score += 10;
                 }// rightAnswer
                     
                 function wrongAnswer(index){
@@ -160,6 +201,40 @@ in html
         <div id="q5Feedback"></div>
         <br></br>
         
+        <!--additional five questions-->
+        <h3><span id="markImg6"></span>What state is called the golden state?</h3>
+        <input type="checkbox" id="California"> <label for"California">California</label>
+        <input type="checkbox" id="Florida"> <label for"Florida">Florida</label>
+        <div id="q6Feedback"></div>
+        <br><br>
+        
+        <h3><span id="markImg7"></span>What animal is on the California flag?</h3>
+        <select id="q7">
+            <option value="">Select One</option>
+            <option value="eagle">Eagle</option>
+            <option value="bear">Bear</option>
+        </select>
+        <div id="q7Feedback"></div>
+        <br><br>
+        
+        <h3><span id="markImg8"></span>What is the capital of Illinois?</h3>
+        <input type="text" id="q8">
+        <div id="q8Fedback"></div>
+        <br><br>
+        
+        <h3><span id="markImg9"></span>Which state is considered to be the largest by area?</h3>
+        <input type="checkbox" id="Alaska"> <label for"Alaska">Alaska</label>
+        <input type="checkbox" id="Texas"> <label for"Texas">Texas</label>
+        <div id="q9Feedback"></div>
+        <br><br>
+        
+        <h3><span id="markImg10"></span>The major body of water that touches Texas is the Antlatic Ocean</h3>
+        <input type="checkbox" id="q10True"> <label for"q10True">True</label>
+        <input type="checkbox" id="q10False"> <label for"q10False">False</label>
+        <div id="q10Feedback"></div>
+        <br><br>
+        
+        <!--attempts and score printout-->
         <h3 id="validationFeedback" class="bg-danger text-white"></h3>
         <button class="btn btn-outline-success">Submit Quiz</button>
         <h2 id="totalScore" class="text-info"></h2>
